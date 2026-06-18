@@ -1,5 +1,3 @@
-import '../types/gsi';
-
 const SCOPE = 'https://www.googleapis.com/auth/youtube.readonly';
 
 function waitForGis(): Promise<void> {
