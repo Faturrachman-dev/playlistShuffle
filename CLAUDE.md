@@ -2,7 +2,7 @@
 
 YouTube playlist shuffler using a Mersenne-Twister algorithm. Supports up to 12,000
 videos, playlist mixes (comma-separated URLs + `name:` suffix), keyboard shortcuts,
-and three visual themes. Deployed on Vercel. Planned: Chrome extension version.
+and three visual themes. Owned by Faturrachman-dev. Deployed on Vercel.
 
 ## Commands
 
@@ -16,29 +16,40 @@ npm run test:watch   # vitest watch mode
 npm run lint         # ESLint --fix (.ts/.tsx)
 ```
 
+## Deployment
+
+- **Vercel project:** `nexc-playerlist` (faturrachman6773-gmailcoms-projects team)
+- **Live URL:** https://nexc-playerlist.vercel.app (or playlist-shuffle-teal.vercel.app)
+- **Deploy:** `npx vercel --prod --yes` from the project root (already authenticated)
+- **GitHub:** https://github.com/Faturrachman-dev/nexc-playerlist
+
 ## Environment
 
-Requires `.env` in the project root (gitignored):
+Requires `.env` in the project root (gitignored). Template: `.env.example`.
 
 ```
 VITE_YT_API_KEY=your_youtube_data_api_v3_key
+VITE_GOOGLE_CLIENT_ID=your_oauth_client_id
 ```
 
-Template: `.env.example`. The key ships in the client bundle (`VITE_` prefix — same
-exposure as before). The old hardcoded key in git history is revoked; use a new one
-from Google Cloud Console (enable YouTube Data API v3).
+Both keys also need to be set in Vercel dashboard (or via `npx vercel env add <KEY> production`).
+- `VITE_YT_API_KEY`: YouTube Data API v3 key from Google Cloud Console.
+- `VITE_GOOGLE_CLIENT_ID`: OAuth 2.0 Client ID (Web application type). Authorized JS
+  origins must include the dev URL (`http://localhost:9550`) and the Vercel production URL.
+  OAuth consent screen must be published (or the user added as Test User while in Testing mode).
 
 ## Architecture
 
 | Layer | Tech |
 |---|---|
 | Build | Vite 5 + `@vitejs/plugin-react` |
-| Language | TypeScript 5 (strict, `allowJs: false`) |
-| State | Redux Toolkit 2 — 4 slices + redux-persist (localStorage key `'root'`) |
+| Language | TypeScript 5 (strict, `allowJs: false`, lib: ES2020+ES2021) |
+| State | Redux Toolkit 2 — 5 slices + redux-persist (localStorage key `'root'`) |
 | Routing | React Router v6 |
 | Player | react-player 2 (YouTube iframe) |
 | Styling | Tailwind CSS 3 + tw-colors (3 themes: `light` / `dark` / `image`) |
 | API | YouTube Data API v3 via axios (paginated 50/page, etag caching) |
+| Auth | Google Identity Services (GIS) token model — client-side OAuth, no backend |
 | Shuffle | mersenne-twister npm package |
 | Tests | Vitest |
 | Lint | ESLint (airbnb) + Prettier |
@@ -52,6 +63,8 @@ from Google Cloud Console (enable YouTube Data API v3).
   playlistLength?
 - **playlistSongsByIdSlice** — `Record<playlistId, Song[]>`
 - **homepageSlice** — `searchInput: string`
+- **authSlice** — `accessToken: string | null`, `expiresAt: number | null`. **Blacklisted
+  from redux-persist** — token lives in memory only, cleared on page reload.
 
 Typed hooks: `useAppDispatch` / `useAppSelector` in `src/redux/hooks.ts`.
 `RootState` and `AppDispatch` exported from `src/redux/store.ts`.
@@ -60,10 +73,11 @@ Typed hooks: `useAppDispatch` / `useAppSelector` in `src/redux/hooks.ts`.
 
 - `youtube.ts` — YouTube API response shapes (`YouTubePlaylistItem*`)
 - `playlist.ts` — `Song`, `PlaylistDetail`, `SearchResultSong`, `ValidateIdResult`,
-  `FetchVideosResult`, `FetchPlaylistDataResult`, payload update interfaces
+  `FetchVideosResult` (includes `'private'` case), `FetchPlaylistDataResult`, payload interfaces
 - `lyrics.ts` — `LrcLine`, `LrcLibResponse`, `LyricsResult`, `LyricsStatus`
+- `gsi.d.ts` — ambient types for `window.google.accounts.oauth2` (GIS token client)
 - `mersenne-twister.d.ts` — ambient module shim (`constructor`, `random()`)
-- `src/vite-env.d.ts` — `ImportMetaEnv` augmented with `VITE_YT_API_KEY`
+- `src/vite-env.d.ts` — `ImportMetaEnv` with `VITE_YT_API_KEY` + `VITE_GOOGLE_CLIENT_ID`
 
 ## File structure
 
@@ -72,16 +86,35 @@ src/
   App.tsx / main.tsx       ← entry points
   app.css                  ← Tailwind directives
   vite-env.d.ts
-  components/              ← React components (.tsx)
+  components/
+    Navbar/
+      Navbar.tsx           ← includes AuthButton
+      AuthButton.tsx       ← Google sign-in / sign-out button
+    HomePage/
+      Search/Search.tsx    ← playlist URL input + load logic
+      PlaylistUsed/        ← saved playlist cards with update/sort/delete
+    PlaylistPage/
+      Player/Player.tsx    ← ReactPlayer + audio-only thumbnail overlay
+      PlayerToolbar/       ← background-mode + lyrics toggle buttons
+      Lyrics/Lyrics.tsx    ← synced lyrics panel (LRCLIB)
+      MediaButtons/        ← play/pause/skip/shuffle/loop
+      ProgressBar/
+      PlayingRightNow/
+      VideoCard/           ← virtualised song list
   redux/
-    slices/                ← RTK createSlice files (.ts)  ← source of truth
-    store.ts               ← configureStore + persistor
+    slices/                ← 5 RTK createSlice files (source of truth)
+    store.ts               ← configureStore + persistor (auth blacklisted)
     hooks.ts               ← typed useAppDispatch/useAppSelector
   hooks/                   ← visibility.ts
-  utils/                   ← fetchPlaylistData.ts, fetchPlaylistVideos.ts, validateId.ts,
-                              fetchLyrics.ts, parseLrc.ts, parseTitleArtist.ts
+  utils/
+    fetchPlaylistData.ts   ← GET /playlists (metadata); accepts optional accessToken
+    fetchPlaylistVideos.ts ← GET /playlistItems (paginated); accepts optional accessToken
+    validateId.ts          ← parses/validates playlist URL or ID
+    youtubeAuth.ts         ← GIS wrapper: requestAccessToken(), revokeToken()
+    fetchLyrics.ts         ← LRCLIB fetch + cache + prefetch
+    parseLrc.ts            ← LRC string → sorted LrcLine[]
+    parseTitleArtist.ts    ← [track, artist] from YouTube snippet title + channel
   types/                   ← shared TypeScript types
-  images/                  ← source images (also copied to public/)
 public/
   assets/favicon.png
   assets/images/           ← background image served at runtime
@@ -99,7 +132,9 @@ leave this in place; it costs nothing and guards against accidental `.js` file a
 
 Possible next steps:
 - Enable `noUncheckedIndexedAccess: true` in tsconfig for additional array safety
-- Remove `react-github-btn` from package.json if unused (check components)
+- Remove `react-github-btn` from package.json if unused (check components first)
+- Add Vercel env vars for production OAuth (`VITE_GOOGLE_CLIENT_ID`)
+- Publish the OAuth consent screen in GCP so any Google account can sign in
 
 ## Player toolbar (`src/components/PlaylistPage/PlayerToolbar/`)
 
@@ -135,10 +170,45 @@ format (`[mm:ss.xx] text`) in `syncedLyrics`; plain text fallback in `plainLyric
   request for the current song, `fetchLyrics` joins that promise instead of firing again.
 - Cache is never populated with failed/null results, so a network timeout is retryable.
 
+## YouTube OAuth (sign in to load private playlists)
+
+**Why:** Private/user-specific playlists (`LR`-prefix Recap, Watch Later, Liked Videos)
+return `totalResults=0` from the public API. The YouTube Data API needs an OAuth access
+token to fetch them.
+
+**Approach:** Google Identity Services (GIS) token model (`initTokenClient`) — fully
+client-side, no backend, no client secret needed. Scope: `youtube.readonly`.
+Token is short-lived (~1 hour), in-memory only (never persisted to localStorage).
+
+**Files:**
+- `src/utils/youtubeAuth.ts` — `requestAccessToken()` opens Google consent popup and
+  returns `{ token, expiresAt }`. `revokeToken(token)` for sign-out.
+- `src/types/gsi.d.ts` — ambient window.google types (no npm package, loaded via CDN).
+- `src/redux/slices/authSlice.ts` — `setAuth` / `clearAuth`; blacklisted from persist.
+- `src/components/Navbar/AuthButton.tsx` — sign-in/sign-out button in navbar.
+- `index.html` — `<script src="https://accounts.google.com/gsi/client" async defer>`
+
+**Token threading:** `fetchPlaylistVideos` and `fetchPlaylistData` accept an optional
+`accessToken?: string`. When provided: `Authorization: Bearer <token>` header, no `key=`
+param. When absent: falls back to `key=VITE_YT_API_KEY` (public playlists). Both
+`Search.tsx` and `PlaylistUsed.tsx` read `auth.accessToken` from Redux and pass it through.
+
+**Private playlist error handling:** `fetchPlaylistVideos` returns `'private'` (not
+`undefined`) when the API succeeds with 0 results. `Search.tsx` shows a context-aware
+message: prompts sign-in if not authenticated, or "not accessible with your account"
+if already signed in.
+
+## Playlist ID validation (`src/utils/validateId.ts`)
+
+Supported prefixes: `PL`, `OLAK`, `RD`, `UU`, `LR` (added for YouTube Recap playlists).
+Minimum length: 13 characters. Also handles full YouTube URLs and mix playlists
+(comma-separated, `name:` suffix).
+
 ## Known gotchas
 
 - **redux-persist serializableCheck** — must ignore `[FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]` (already set in store.ts)
 - **Persist key `'root'`** — do not change; changing it wipes users' saved playlists
+- **auth slice blacklisted** — `blacklist: ['auth']` in persistConfig; tokens are session-only
 - **`seekTo`/`seekKeyboard`** are `number | null`, not `number` — Player guards with `?`
 - **Background image** — runtime string `url(./assets/images/...)` resolves from `public/`
 - **Favicon** — `public/assets/favicon.png` (index.html references `/assets/favicon.png`)
@@ -151,3 +221,11 @@ format (`[mm:ss.xx] text`) in `syncedLyrics`; plain text fallback in `plainLyric
   by `handleReady`). Don't call `parseTitleArtist` on `player.title`/`player.artist`.
 - **LRCLIB latency** — expect 15–35 s per request from Southeast Asia (server is EU/US).
   The parallel `/get`+`/search` + prefetch cache mitigates perceived latency.
+- **`Promise.any`** — requires `lib: ["ES2021"]` in tsconfig (already set). Do NOT revert to ES2020-only.
+- **GIS script import** — `src/types/gsi.d.ts` is an ambient declaration; do NOT import it
+  with `import '../types/gsi'` in `.ts` files — Rollup will fail the production build trying
+  to resolve it. TypeScript picks it up automatically via tsconfig `include: ["src"]`.
+- **Vercel project name** — renamed from `playlist-shuffle` to `nexc-playerlist`. The old
+  alias `playlist-shuffle-teal.vercel.app` persists until manually removed in the dashboard.
+- **`FetchVideosResult`** now includes `'private'` — any narrowing that checks
+  `typeof data === 'number'` must also handle the string `'private'` case separately.
