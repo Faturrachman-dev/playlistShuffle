@@ -1,7 +1,7 @@
 const { createThemes } = require('tw-colors');
 
 module.exports = {
-  content: ['./src/**/*.{html,jsx}'],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}', './index.html'],
   darkMode: 'class',
   theme: {
     fontFamily: {

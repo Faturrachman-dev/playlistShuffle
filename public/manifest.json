@@ -1,0 +1,16 @@
+{
+  "name": "Playlist Shuffle",
+  "short_name": "PLShuffle",
+  "description": "Randomize/shuffle your YouTube playlist up to 12000 videos",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#404040",
+  "theme_color": "#e94747",
+  "icons": [
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
