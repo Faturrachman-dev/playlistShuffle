@@ -20,10 +20,10 @@ export default function Footer() {
         </p>
         <div className="items-center mx-2 mt-auto mb-0">
           <GitHubButton
-            href="https://github.com/Faturrachman-dev/playlistShuffle"
+            href="https://github.com/Faturrachman-dev/nexc-playerlist"
             data-icon="octicon-star"
             data-show-count="true"
-            aria-label="Star Faturrachman-dev/playlistShuffle on GitHub"
+            aria-label="Star Faturrachman-dev/nexc-playerlist on GitHub"
           >
             Star
           </GitHubButton>
