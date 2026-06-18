@@ -9,7 +9,7 @@ export default function validateId(str: unknown): ValidateIdResult {
   const minLength = 13;
 
   if (arrayOfIds[0]?.toLowerCase() === 'play my pl') {
-    return 'PLi06ybkpczJDt0Ydo3Umjtv97bDOcCtAZ';
+    return 'PLi06ybkpczJBvFfOhfqDyKMl1Lp2tDkTb';
   }
   if (arrayOfIds.length === 1) {
     try {

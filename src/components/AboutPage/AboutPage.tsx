@@ -29,7 +29,7 @@ export default function AboutPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary"
-              href="https://www.buymeacoffee.com/shufflePlaylist"
+              href="https://ko-fi.com/faturismee"
             >
               coffee
             </a>

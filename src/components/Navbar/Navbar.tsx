@@ -54,7 +54,7 @@ function Navbar() {
           <h1
             className="text-lg font-bold text-left cursor-pointer navbar sm:text-2xl font-open text-textColor"
           >
-            Shuffle Playlist{' '}
+            NEXC Playerlist{' '}
           </h1>
         </button>
         <div className="flex flex-row mr-2 items-center">
@@ -65,14 +65,11 @@ function Navbar() {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://www.buymeacoffee.com/shufflePlaylist"
-                  aria-label="buy me a coffee link"
+                  href="https://ko-fi.com/faturismee"
+                  aria-label="support on ko-fi"
+                  className="my-auto px-3 py-1 rounded-md text-sm font-open font-semibold text-white bg-[#FF5E5B] hover:opacity-90 active:scale-105 transition-opacity"
                 >
-                  <img
-                    src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=playlistshuffle&button_colour=E94747&font_colour=FFFFFF&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00"
-                    alt="buy me a coffee button"
-                    className="h-[37px]"
-                  />
+                  ☕ Support
                 </a>
               </div>
               <div className="my-auto mr-1">
@@ -90,16 +87,13 @@ function Navbar() {
             <div className="flex">
               <div className="flex flex-row mx-4 my-auto rounded-md w-44 justify-evenly hover:scale-105 active:scale-110">
                 <a
-                  href="https://www.buymeacoffee.com/shufflePlaylist"
-                  aria-label="buy me a coffee link"
+                  href="https://ko-fi.com/faturismee"
+                  aria-label="support on ko-fi"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="my-auto px-3 py-1 rounded-md text-sm font-open font-semibold text-white bg-[#FF5E5B] hover:opacity-90 active:scale-105 transition-opacity"
                 >
-                  <img
-                    src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=playlistshuffle&button_colour=008BA7&font_colour=FFFFFF&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00"
-                    alt="buy me a coffee button"
-                    className="h-[37px]"
-                  />
+                  ☕ Support
                 </a>
               </div>
               <div className="my-auto mr-1">
@@ -117,16 +111,13 @@ function Navbar() {
             <div className="flex">
               <div className="flex flex-row mx-4 my-auto rounded-md w-44 justify-evenly hover:scale-105 active:scale-110">
                 <a
-                  href="https://www.buymeacoffee.com/shufflePlaylist"
-                  aria-label="buy me a coffee link"
+                  href="https://ko-fi.com/faturismee"
+                  aria-label="support on ko-fi"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="my-auto px-3 py-1 rounded-md text-sm font-open font-semibold text-white bg-[#FF5E5B] hover:opacity-90 active:scale-105 transition-opacity"
                 >
-                  <img
-                    src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=playlistshuffle&button_colour=006868&font_colour=FFFFFF&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00"
-                    alt="buy me a coffee button"
-                    className="h-[37px]"
-                  />
+                  ☕ Support
                 </a>
               </div>
               <div className="my-auto mr-1">

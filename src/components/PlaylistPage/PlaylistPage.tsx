@@ -183,8 +183,8 @@ export default function PlaylistPage() {
         percentage={player.videoPercentage}
         title={
           currentVideoName
-            ? `${currentVideoName} - Playlist Shuffle`
-            : 'Playlist Shuffle | randomize your playlist'
+            ? `${currentVideoName} - NEXC Playerlist`
+            : 'NEXC Playerlist | shuffle your YouTube playlist'
         }
       />
       <div className="h-full flex flex-col overflow-hidden md:block items-center md:mx-auto">

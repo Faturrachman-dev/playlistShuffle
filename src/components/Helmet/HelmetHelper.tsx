@@ -9,7 +9,7 @@ interface Props {
 function HelmetHelper({ percentage = 0, title }: Props) {
   return (
     <Helmet
-      defaultTitle="Playlist Randomizer - Shuffle Youtube Playlists up to 12000 videos"
+      defaultTitle="NEXC Playerlist - Shuffle your YouTube playlist"
       title={`${percentage ? `${percentage}%` : ''} ${title}`}
       defer={false}
     />

@@ -1,7 +1,7 @@
 {
-  "name": "Playlist Shuffle",
-  "short_name": "PLShuffle",
-  "description": "Randomize/shuffle your YouTube playlist up to 12000 videos",
+  "name": "NEXC Playerlist",
+  "short_name": "NEXC",
+  "description": "NEXC Playerlist - Shuffle your YouTube playlist up to 12000 videos",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#404040",

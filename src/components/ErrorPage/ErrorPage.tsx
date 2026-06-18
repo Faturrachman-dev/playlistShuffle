@@ -19,7 +19,7 @@ export default function ErrorPage() {
             To report the problem on github&nbsp;
             <a
               className="text-primary font-semibold font-open"
-              href="https://github.com/jooonathann/playlistShuffle/issues"
+              href="https://github.com/Faturrachman-dev/playlistShuffle/issues"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="github link"

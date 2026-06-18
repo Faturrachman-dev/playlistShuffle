@@ -181,17 +181,7 @@ export default function Search() {
           <p className="text-textColor font-open">{errorReason}</p>
         ) : (
           <p className="text-textColor font-open">
-            To add multiple playlist read&nbsp;
-            <a
-              className="text-secondary font-semibold font-open hover:scale-110 underline"
-              href="https://github.com/jooonathann/playlistShuffle#How-to-combine-multiple-playlist"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="github link"
-            >
-              here
-            </a>
-            &nbsp;or Enter a playlist URL or ID:
+            Enter a playlist URL or ID:
           </p>
         )}
         <div className="w-full flex my-2 justify-between">

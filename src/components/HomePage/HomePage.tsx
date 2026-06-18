@@ -24,7 +24,7 @@ export default function HomePage() {
 
   return (
     <div className="h-screen min-h-screen">
-      <HelmetHelper title="Playlist Randomizer - Shuffle Youtube Playlists up to 12000 videos" />
+      <HelmetHelper title="NEXC Playerlist - Shuffle your YouTube playlist" />
       <div className="transition-colors bg-backColor image:bg-[unset] flex flex-col justify-between h-screen min-h-screen mx-auto">
         <Navbar />
         <div className="w-11/12 h-1/5 flex-col flex mx-auto md:max-w-[1600px]">

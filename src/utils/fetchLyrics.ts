@@ -5,7 +5,7 @@ import { parseLrc } from './parseLrc';
 import { parseTitleArtist } from './parseTitleArtist';
 
 const BASE = 'https://lrclib.net/api';
-const UA = 'playlistShuffle v1.0.0 (https://playlistshuffle.vercel.app)';
+const UA = 'nexc-playerlist v1.0.0 (https://playlist-shuffle-teal.vercel.app)';
 
 // Completed results keyed by videoId
 const cache = new Map<string, LyricsResult>();

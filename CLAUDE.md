@@ -1,4 +1,4 @@
-# playlistShuffle — Claude Code Context
+# nexc-playerlist — Claude Code Context
 
 YouTube playlist shuffler using a Mersenne-Twister algorithm. Supports up to 12,000
 videos, playlist mixes (comma-separated URLs + `name:` suffix), keyboard shortcuts,
